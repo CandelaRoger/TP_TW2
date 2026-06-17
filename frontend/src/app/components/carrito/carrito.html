@@ -1,0 +1,36 @@
+<div class="carrito-container">
+  <header class="header-carrito">
+    <h1>Resumen de tu Pedido</h1>
+  </header>
+
+  <main class="contenido-carrito">
+    <button class="btn-volver" (click)="volverAlCatalogo()">← Volver al Catálogo</button>
+
+    <div class="tabla-pedido">
+      @for (item of itemsCarrito; track item.Id) {
+        <div class="item-fila">
+          <div class="item-info">
+            <h3>{{ item.Nombre }}</h3>
+            <p>Categoría: {{ item.Clasificacion }}</p>
+          </div>
+          <div class="item-precio-cant">
+            <div>Cant: {{ item.cantidad }}</div>
+            <div>${{ item.Precio * item.cantidad }}</div>
+          </div>
+        </div>
+      } @empty {
+        <div class="carrito-vacio">
+          <p>No agregaste productos aún</p>
+        </div>
+      }
+
+      @if (itemsCarrito.length > 0) {
+        <div class="resumen-total">
+          <span>Total estimado:</span>
+          <span class="total-precio">${{ total }}</span>
+        </div>
+        <button class="btn-finalizar" (click)="finalizarCompra()">Confirmar Pedido</button>
+      }
+    </div>
+  </main>
+</div>
