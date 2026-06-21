@@ -102,6 +102,19 @@ exports.Prisma.ProductoScalarFieldEnum = {
   precio: 'precio'
 };
 
+exports.Prisma.CarritoScalarFieldEnum = {
+  id: 'id',
+  creadoEn: 'creadoEn',
+  cerrado: 'cerrado'
+};
+
+exports.Prisma.CarritoItemScalarFieldEnum = {
+  id: 'id',
+  carritoId: 'carritoId',
+  productoId: 'productoId',
+  cantidad: 'cantidad'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -109,7 +122,9 @@ exports.Prisma.SortOrder = {
 
 
 exports.Prisma.ModelName = {
-  producto: 'producto'
+  producto: 'producto',
+  carrito: 'carrito',
+  carritoItem: 'carritoItem'
 };
 /**
  * Create the Client
@@ -150,6 +165,7 @@ const config = {
     "db"
   ],
   "activeProvider": "sqlserver",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
@@ -158,13 +174,13 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlserver\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel producto {\n  id            Int    @id @default(autoincrement())\n  nombre        String @db.Char(100)\n  descripcion   String @db.VarChar(255)\n  clasificacion String @db.Char(50)\n  precio        Float\n\n  @@map(\"Productos\")\n}\n",
-  "inlineSchemaHash": "2a014ef15df08625674f47ef1f99667763ee7de949f2a4bc3e52e7c51f1ca3d9",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/prisma\"\n}\n\ndatasource db {\n  provider = \"sqlserver\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel producto {\n  id            Int           @id @default(autoincrement())\n  nombre        String        @db.Char(100)\n  descripcion   String        @db.VarChar(255)\n  clasificacion String        @db.Char(50)\n  precio        Float\n  itemsCarrito  carritoItem[]\n\n  @@map(\"Productos\")\n}\n\nmodel carrito {\n  id       Int           @id @default(autoincrement())\n  creadoEn DateTime      @default(now())\n  cerrado  Boolean       @default(false)\n  items    carritoItem[]\n\n  @@map(\"Carritos\")\n}\n\nmodel carritoItem {\n  id         Int      @id @default(autoincrement())\n  carritoId  Int\n  carrito    carrito  @relation(fields: [carritoId], references: [id])\n  productoId Int\n  producto   producto @relation(fields: [productoId], references: [id])\n  cantidad   Int      @default(1)\n\n  @@unique([carritoId, productoId])\n  @@map(\"CarritoItems\")\n}\n",
+  "inlineSchemaHash": "bd6b92087cf0e558f8dff546abb31a2144691a604b93081b57957e9fb5856b67",
   "copyEngine": true
 }
 config.dirname = '/'
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"producto\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nombre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"descripcion\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"clasificacion\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"precio\",\"kind\":\"scalar\",\"type\":\"Float\"}],\"dbName\":\"Productos\"}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"producto\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"nombre\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"descripcion\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"clasificacion\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"precio\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"itemsCarrito\",\"kind\":\"object\",\"type\":\"carritoItem\",\"relationName\":\"carritoItemToproducto\"}],\"dbName\":\"Productos\"},\"carrito\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"creadoEn\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"cerrado\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"items\",\"kind\":\"object\",\"type\":\"carritoItem\",\"relationName\":\"carritoTocarritoItem\"}],\"dbName\":\"Carritos\"},\"carritoItem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"carritoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"carrito\",\"kind\":\"object\",\"type\":\"carrito\",\"relationName\":\"carritoTocarritoItem\"},{\"name\":\"productoId\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"producto\",\"kind\":\"object\",\"type\":\"producto\",\"relationName\":\"carritoItemToproducto\"},{\"name\":\"cantidad\",\"kind\":\"scalar\",\"type\":\"Int\"}],\"dbName\":\"CarritoItems\"}},\"enums\":{},\"types\":{}}")
 defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = {
   getRuntime: async () => require('./query_engine_bg.js'),

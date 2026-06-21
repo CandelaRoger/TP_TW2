@@ -1,5 +1,6 @@
 import { Router } from "express";
 import productoRouter from "./producto-router/producto.router.js";
+import carritoRouter from "./carrito-router/carrito.router.js";
 
 export class AppRoutes {
 
@@ -10,6 +11,11 @@ export class AppRoutes {
         router.use(
             "/api/datos",
             productoRouter
+        );
+
+        router.use(
+            "/api/carrito",
+            carritoRouter
         );
 
         return router;
