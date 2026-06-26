@@ -1,7 +1,6 @@
 import { Router } from "express";
 import productoRouter from "./producto-router/producto.router.js";
-import carritoRouter from "./carrito-router/carrito.router.js";
-
+import carritoRouter from "./producto-router/carrito.router.js";
 export class AppRoutes {
 
     static get routes(): Router {

@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    
-  "dev": "tsx watch src/index.ts"
-
+    "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
     "cors": "^2.8.6",

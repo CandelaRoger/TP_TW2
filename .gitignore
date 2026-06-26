@@ -14,3 +14,14 @@ frontend/.angular/
 
 # VS Code
 .vscode/
+# Prisma Client autogenerado
+**/src/prisma/*
+!**/src/prisma/schema.prisma
+# Ignorar dependencias de Node
+**/node_modules/
+
+# Ignorar el archivo de variables de entorno
+**/.env
+
+# Ignorar la carpeta autogenerada de Prisma (la que está adentro de src)
+backend/src/prisma/*

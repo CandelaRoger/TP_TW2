@@ -8,10 +8,11 @@ const service = new CarritoService(repository);
 
 function manejarError(error: unknown, res: Response) {
     if (error instanceof HttpError) {
+        console.error("[Controller] Error controlado:", error.status, error.message);
         return res.status(error.status).json({ error: error.message });
     }
 
-    console.error(error);
+    console.error("[Controller] Error interno:", error);
     return res.status(500).json({ error: "Error interno del servidor" });
 }
 
@@ -22,8 +23,10 @@ export class CarritoController {
         req: Request,
         res: Response
     ) => {
+        console.log("[Controller] POST /api/carrito - petición recibida");
         try {
             const carrito = await service.crearCarrito();
+            console.log("[Controller] POST /api/carrito - carrito creado:", carrito);
             res.status(201).json(carrito);
         } catch (error) {
             manejarError(error, res);
@@ -35,9 +38,11 @@ export class CarritoController {
         req: Request,
         res: Response
     ) => {
+        const carritoId = Number(req.params.carritoId);
+        console.log("[Controller] GET /api/carrito/:carritoId - id:", carritoId);
         try {
-            const carritoId = Number(req.params.carritoId);
             const carrito = await service.obtenerCarrito(carritoId);
+            console.log("[Controller] GET /api/carrito/:carritoId - respuesta:", carrito);
             res.status(200).json(carrito);
         } catch (error) {
             manejarError(error, res);
@@ -49,11 +54,12 @@ export class CarritoController {
         req: Request,
         res: Response
     ) => {
+        const carritoId = Number(req.params.carritoId);
+        const { productoId, cantidad } = req.body;
+        console.log("[Controller] POST /api/carrito/:carritoId/items - carritoId:", carritoId, "body:", req.body);
         try {
-            const carritoId = Number(req.params.carritoId);
-            const { productoId, cantidad } = req.body;
-
             const carrito = await service.agregarItem(carritoId, Number(productoId), cantidad ? Number(cantidad) : 1);
+            console.log("[Controller] POST /api/carrito/:carritoId/items - carrito actualizado:", carrito);
             res.status(201).json(carrito);
         } catch (error) {
             manejarError(error, res);
@@ -65,12 +71,13 @@ export class CarritoController {
         req: Request,
         res: Response
     ) => {
+        const carritoId = Number(req.params.carritoId);
+        const itemId = Number(req.params.itemId);
+        const { cantidad } = req.body;
+        console.log("[Controller] PUT /api/carrito/:carritoId/items/:itemId -", { carritoId, itemId, cantidad });
         try {
-            const carritoId = Number(req.params.carritoId);
-            const itemId = Number(req.params.itemId);
-            const { cantidad } = req.body;
-
             const carrito = await service.actualizarCantidad(carritoId, itemId, Number(cantidad));
+            console.log("[Controller] PUT /api/carrito/:carritoId/items/:itemId - carrito actualizado:", carrito);
             res.status(200).json(carrito);
         } catch (error) {
             manejarError(error, res);
@@ -82,11 +89,12 @@ export class CarritoController {
         req: Request,
         res: Response
     ) => {
+        const carritoId = Number(req.params.carritoId);
+        const itemId = Number(req.params.itemId);
+        console.log("[Controller] DELETE /api/carrito/:carritoId/items/:itemId -", { carritoId, itemId });
         try {
-            const carritoId = Number(req.params.carritoId);
-            const itemId = Number(req.params.itemId);
-
             const carrito = await service.eliminarItem(carritoId, itemId);
+            console.log("[Controller] DELETE /api/carrito/:carritoId/items/:itemId - carrito actualizado:", carrito);
             res.status(200).json(carrito);
         } catch (error) {
             manejarError(error, res);
@@ -98,10 +106,11 @@ export class CarritoController {
         req: Request,
         res: Response
     ) => {
+        const carritoId = Number(req.params.carritoId);
+        console.log("[Controller] DELETE /api/carrito/:carritoId - id:", carritoId);
         try {
-            const carritoId = Number(req.params.carritoId);
-
             const carrito = await service.vaciarCarrito(carritoId);
+            console.log("[Controller] DELETE /api/carrito/:carritoId - carrito vaciado:", carrito);
             res.status(200).json(carrito);
         } catch (error) {
             manejarError(error, res);
@@ -113,10 +122,11 @@ export class CarritoController {
         req: Request,
         res: Response
     ) => {
+        const carritoId = Number(req.params.carritoId);
+        console.log("[Controller] POST /api/carrito/:carritoId/finalizar - id:", carritoId);
         try {
-            const carritoId = Number(req.params.carritoId);
-
             const resumen = await service.finalizarPedido(carritoId);
+            console.log("[Controller] POST /api/carrito/:carritoId/finalizar - resumen final:", resumen);
             res.status(200).json(resumen);
         } catch (error) {
             manejarError(error, res);
