@@ -121,4 +121,9 @@ export class Producto {
       .post<CarritoBackend>(`${this.apiUrl}/carrito/${carritoId}/finalizar`, {})
       .pipe(tap(() => this.limpiarCarritoIdGuardado()));
   }
+
+  registrarUsuario(usuario: any): Observable<any> {
+  const urlRegistro = 'http://localhost:3000/api/registro';
+  return this.http.post<any>(urlRegistro, usuario);
+}
 }

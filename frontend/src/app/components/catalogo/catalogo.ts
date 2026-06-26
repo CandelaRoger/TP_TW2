@@ -9,9 +9,9 @@ import { Producto, ProductoBackend } from '../../servicios/producto';import { Ro
   styleUrl: './catalogo.css',
 })
 export class CatalogoComponent implements OnInit {
-  // Array vacío donde guardaremos los productos que traiga el backend
+  
   listaProductos: ProductoBackend[] = []; 
-  // Inyectamos el servicio en el constructor
+  
   constructor(
     private productoService: Producto,
     private cd: ChangeDetectorRef,
@@ -21,7 +21,7 @@ export class CatalogoComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Cuando el componente se inicializa, llamamos al backend
+    
     this.productoService.obtenerProductos().subscribe({
       next: (data) => {
         this.listaProductos = data; // Guardamos los datos recibidos
@@ -53,5 +53,9 @@ export class CatalogoComponent implements OnInit {
   irAlCarrito() {
     this.router.navigate(['/pedido']);
   }
+  
+  irAlRegistro() {
+  this.router.navigate(['/registro']);
+}
 
 }

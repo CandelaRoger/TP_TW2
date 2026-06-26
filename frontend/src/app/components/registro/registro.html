@@ -1,0 +1,41 @@
+<div class="registro-wrapper">
+  <div class="card-registro">
+    <h2>Crear Cuenta</h2>
+    <p class="subtitulo">Únete a la tienda de peluches Pokemon</p>
+
+    @if (mensajeError) {
+      <div class="alerta-error">{{ mensajeError }}</div>
+    }
+
+    <form (ngSubmit)="onSubmit()" #formRegistro="ngForm">
+      <div class="grupo-input">
+        <label>Nombre</label>
+        <input type="text" name="nombre" [(ngModel)]="usuario.nombre" required placeholder="Tu nombre">
+      </div>
+
+      <div class="grupo-input">
+        <label>Apellido</label>
+        <input type="text" name="apellido" [(ngModel)]="usuario.apellido" required placeholder="Tu apellido">
+      </div>
+
+      <div class="grupo-input">
+        <label>Correo Electrónico</label>
+        <input type="email" name="email" [(ngModel)]="usuario.email" required placeholder="correo@ejemplo.com">
+      </div>
+
+      <div class="grupo-input">
+        <label>Contraseña</label>
+        <input type="password" name="password" [(ngModel)]="usuario.password" required placeholder="••••••••">
+      </div>
+
+      <div class="grupo-input">
+        <label>Dirección</label>
+        <input type="text" name="direccion" [(ngModel)]="usuario.direccion" required placeholder="Calle, Número, Localidad">
+      </div>
+
+      <button type="submit" class="btn-enviar" [disabled]="!formRegistro.valid">
+        Registrarse
+      </button>
+    </form>
+  </div>
+</div>
