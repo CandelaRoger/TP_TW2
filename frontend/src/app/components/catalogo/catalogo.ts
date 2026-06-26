@@ -50,8 +50,5 @@ export class CatalogoComponent implements OnInit {
     });
   }
 
-  irAlCarrito() {
-    this.router.navigate(['/pedido']);
-  }
 
 }
