@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Producto } from '../../servicios/producto'; 
+import { Producto, CarritoItemBackend } from '../../servicios/producto'; 
 
 @Component({
   selector: 'app-carrito',
@@ -11,30 +11,55 @@ import { Producto } from '../../servicios/producto';
   styleUrl: './carrito.css'
 })
 export class CarritoComponent implements OnInit {
-  itemsCarrito: any[] = [];
+  itemsCarrito: CarritoItemBackend[] = [];
   total: number = 0;
 
   constructor(
     private productoService: Producto,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef
   ) {}
 
-  ngOnInit(): void {
-    this.itemsCarrito = this.productoService.obtenerCarrito();
-    this.calcularTotal();
-  }
+ ngOnInit(): void {
+    console.log('[Frontend] Cargando carrito desde el backend...');
 
+    this.productoService.obtenerCarrito().subscribe({
+      next: (carrito) => {
+        console.log('[Frontend] Respuesta del backend (carrito):', carrito);
+     this.itemsCarrito = carrito?.Items ?? [];
+        this.total = carrito?.Total ?? 0;
+
+        this.cd.detectChanges();
+      },
+      error: (err) => {
+        console.error('[Frontend] Error al obtener el carrito:', err);
+      }
+    });
+  }
   calcularTotal(): void {
-    this.total = this.itemsCarrito.reduce((acc, item) => acc + (item.Precio * (item.cantidad || 1)), 0);
+    this.total = this.itemsCarrito.reduce((acc, item) => acc + (item.Precio * (item.Cantidad || 1)), 0);
   }
 
   volverAlCatalogo(): void {
     this.router.navigate(['/productos']); 
   }
 
-  finalizarCompra(): void {
-    alert('Pedido realizado con éxito. Gracias por tu compra en Mundo Electrónico.');
-    this.productoService.limpiarCarrito();
-    this.volverAlCatalogo();
-  }
-}
+   finalizarCompra(): void {
+    console.log('[Frontend] Confirmando pedido...');
+
+    this.productoService.finalizarPedido().subscribe({
+      next: (resumen) => {
+        console.log('[Frontend] Pedido finalizado, resumen:', resumen);
+        alert('Pedido realizado con éxito. Gracias por tu compra en Mundo Electrónico.');
+        this.itemsCarrito = [];
+        this.total = 0;
+
+        this.cd.detectChanges();
+        this.volverAlCatalogo();
+      },
+      error: (err) => {
+        console.error('[Frontend] Error al finalizar el pedido:', err);
+        alert('No se pudo confirmar el pedido.');
+      }
+    });
+}}

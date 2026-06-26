@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Producto, ProductoBackend } from '../../servicios/producto';import { Router } from '@angular/router';
+import { Producto } from '../../servicios/producto';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-catalogo',
@@ -10,7 +11,8 @@ import { Producto, ProductoBackend } from '../../servicios/producto';import { Ro
 })
 export class CatalogoComponent implements OnInit {
   // Array vacío donde guardaremos los productos que traiga el backend
-  listaProductos: ProductoBackend[] = []; 
+  listaProductos: any[] = []; 
+
   // Inyectamos el servicio en el constructor
   constructor(
     private productoService: Producto,
@@ -35,19 +37,9 @@ export class CatalogoComponent implements OnInit {
     });
   }
 
-  agregarProducto(producto: ProductoBackend) {
-    console.log('[Frontend] Click en "Agregar" sobre producto:', producto);
-
-    this.productoService.agregarAlCarrito(producto).subscribe({
-      next: (carrito) => {
-        console.log('[Frontend] Carrito actualizado luego de agregar:', carrito);
-        alert(`${producto.Nombre} se agregó al pedido.`);
-      },
-      error: (err) => {
-        console.error('[Frontend] Error al agregar producto al carrito:', err);
-        alert('No se pudo agregar el producto al pedido.');
-      }
-    });
+  agregarProducto(producto: any) {
+    this.productoService.agregarAlCarrito(producto);
+    alert(`${producto.Nombre} se agregó al pedido.`);
   }
 
   irAlCarrito() {
