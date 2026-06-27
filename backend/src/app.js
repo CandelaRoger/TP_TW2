@@ -29,6 +29,40 @@ app.get('/api/datos', async (req, res) => {
   }
 });
 
+app.post('/api/registro', async (req, res) => {
+  const { nombre, apellido, email, password, direccion } = req.body;
+
+  if (!nombre || !apellido || !email || !password || !direccion) {
+    return res.status(400).json({ error: 'Todos los campos son obligatorios.' });
+  }
+
+  try {
+   
+    const nuevoUsuario = await prisma.usuarios.create({
+      data: {
+        nombre: nombre,
+        apellido: apellido,
+        email: email,
+        password: password,
+        direccion: direccion
+      }
+    });
+
+    res.status(201).json({ 
+      message: 'Usuario registrado con éxito.',
+      usuario: nuevoUsuario 
+    });
+
+  } catch (err) {
+    if (err.code === 'P2002') {
+      return res.status(400).json({ error: 'El correo electrónico ya está registrado.' });
+    }
+    
+    console.error(err);
+    res.status(500).json({ error: 'Error interno del servidor al registrar.' });
+  }
+});
+
 async function startServer() {
   try {
     await sql.connect(config);

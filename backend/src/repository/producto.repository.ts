@@ -12,10 +12,10 @@ export class ProductoRepository {
   async crear(data: { nombre: string; descripcion: string; clasificacion: string; precio: any; imagenUrl: string }) {
     return await prisma.producto.create({ 
       data: {
-        nombre: data.nombre,
-        descripcion: data.descripcion,
-        clasificacion: data.clasificacion,
-        precio: data.precio,
+        Nombre: data.nombre,
+        Descripcion: data.descripcion,
+        Clasificacion: data.clasificacion,
+        Precio: data.precio,
         imagenUrl: data.imagenUrl
       }
     });
@@ -24,7 +24,7 @@ export class ProductoRepository {
   
   async obtenerPorId(id: number) {
     return await prisma.producto.findUnique({ 
-      where: { id: Number(id) }
+      where: { Id: Number(id) }
     });
   }
 }
