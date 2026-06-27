@@ -4,3 +4,20 @@ main {
     justify-content: center;
     align-items: center;
 }
+
+.texto-registrarse {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.texto-registrarse a {
+  color: blue;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.texto-registrarse a:hover {
+  text-decoration: underline;
+}
