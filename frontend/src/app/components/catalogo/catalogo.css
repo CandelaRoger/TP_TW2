@@ -9,46 +9,6 @@ body {
   color: #111827; 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-.header-electronico {
-  background-color: #111827; 
-  padding: 1.5rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid #22C55E; 
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-.logo-container h1 {
-  margin: 0;
-  font-size: 1.8rem;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.logo-tech {
-  color: #FFFFFF;
-}
-
-.logo-green {
-  color: #22C55E;
-  text-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
-}
-.cart-button {
-  background: transparent;
-  border: 2px solid #22C55E;
-  color: #FFFFFF;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.cart-button:hover {
-  background-color: #22C55E;
-  color: #111827;
-  box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
-}
 
 .contenido {
   padding: 2rem;
