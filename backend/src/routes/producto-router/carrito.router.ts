@@ -5,46 +5,22 @@ const router = Router();
 
 const controller = new CarritoController();
 
-// llama a front para crear un carrito nuevo, no se si deberia mostrar iniciar sesion si no sta logeado y demaas o en done va 
+// agregar 
 router.post(
     "/",
-    controller.crearCarrito
+    controller.agregarProducto
 );
 
-// ver total y pedidos
+// ver el carrito 
 router.get(
-    "/:carritoId",
-    controller.obtenerCarrito
+    "/",
+    controller.verCarrito
 );
 
-//agregar
+// confirmar
 router.post(
-    "/:carritoId/items",
-    controller.agregarItem
-);
-
-// actualizamos stock 
-router.put(
-    "/:carritoId/items/:itemId",
-    controller.actualizarItem
-);
-
-//borramos
-router.delete(
-    "/:carritoId/items/:itemId",
-    controller.eliminarItem
-);
-
-// vacia
-router.delete(
-    "/:carritoId",
-    controller.vaciarCarrito
-);
-
-//confirmar o finalizarr
-router.post(
-    "/:carritoId/finalizar",
-    controller.finalizarPedido
+    "/confirmar",
+    controller.confirmarPedido
 );
 
 export default router;

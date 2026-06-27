@@ -1,15 +1,7 @@
 export interface CarritoItem {
-    Id?: number;
-    CarritoId: number;
-    ProductoId: number;
+    Id: number;
+    Nombre: string;
+    Precio: number;
     Cantidad: number;
-}
-
-export interface AgregarItemInput {
-    productoId: number;
-    cantidad?: number;
-}
-
-export interface ActualizarItemInput {
-    cantidad: number;
+    Subtotal: number;
 }

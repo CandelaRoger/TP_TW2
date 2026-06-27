@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef} from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Producto, ProductoBackend } from '../../servicios/producto';import { Router } from '@angular/router';
+import { Producto, ProductoBackend } from '../../servicios/producto';
+import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-catalogo',
@@ -9,53 +10,46 @@ import { Producto, ProductoBackend } from '../../servicios/producto';import { Ro
   styleUrl: './catalogo.css',
 })
 export class CatalogoComponent implements OnInit {
-  
-  listaProductos: ProductoBackend[] = []; 
-  
+  listaProductos: ProductoBackend[] = [];
+  cargando: boolean = true;
+
   constructor(
     private productoService: Producto,
-    private cd: ChangeDetectorRef,
-    private router: Router
-  ) {
-    
-  }
+    private cd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    
     this.productoService.obtenerProductos().subscribe({
       next: (data) => {
-        this.listaProductos = data; // Guardamos los datos recibidos
-        console.log('Productos cargados:', this.listaProductos);
-
+        this.listaProductos = data;
+        this.cargando = false;
         this.cd.detectChanges();
       },
-      error: (err) => {
-        console.error('Error al traer los productos del backend:', err);
+      error: () => {
+        this.cargando = false;
+        Swal.fire({ icon: 'error', title: 'Oops...', text: 'No se pudieron cargar los productos.' });
       }
     });
   }
 
   agregarProducto(producto: ProductoBackend) {
-    console.log('[Frontend] Click en "Agregar" sobre producto:', producto);
-
-    this.productoService.agregarAlCarrito(producto).subscribe({
-      next: (carrito) => {
-        console.log('[Frontend] Carrito actualizado luego de agregar:', carrito);
-        alert(`${producto.Nombre} se agregó al pedido.`);
+    this.productoService.agregarAlCarrito(producto.Id, 1).subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Agregado!',
+          text: `${producto.Nombre} se agregó al carrito.`,
+          icon: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
       },
-      error: (err) => {
-        console.error('[Frontend] Error al agregar producto al carrito:', err);
-        alert('No se pudo agregar el producto al pedido.');
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'No se pudo agregar el producto al carrito.'
+        });
       }
     });
   }
-
-  irAlCarrito() {
-    this.router.navigate(['/pedido']);
-  }
-  
-  irAlRegistro() {
-  this.router.navigate(['/registro']);
-}
-
 }
