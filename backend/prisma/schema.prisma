@@ -29,6 +29,7 @@ model producto {
   Descripcion    String           @db.VarChar(255)
   Clasificacion  String           @db.VarChar(100)
   Precio         Decimal          @db.Decimal(10, 2)
+  ImagenUrl      String?          @db.VarChar(500)
   DetalleCarrito DetalleCarrito[]
 
   @@map("Productos")
