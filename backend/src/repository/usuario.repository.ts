@@ -14,11 +14,11 @@ export class UsuarioRepository {
 
         return await prisma.usuario.create({
             data: {
-                Nombre: data.nombre,
-                Apellido: data.apellido,
-                Email: data.email,
-                Password: data.password,
-                Direccion: data.direccion
+                nombre: data.nombre,
+                apellido: data.apellido,
+                email: data.email,
+                password: data.password,
+                direccion: data.direccion
             }
         });
 
