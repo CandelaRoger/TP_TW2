@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms'; 
 import { Router } from '@angular/router';
-import { Producto} from '../../servicios/producto';
+import { Producto} from '../../api/producto';
 
 @Component({
   selector: 'app-registro',

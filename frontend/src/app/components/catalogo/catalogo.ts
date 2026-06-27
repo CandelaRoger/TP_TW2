@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Producto, ProductoBackend } from '../../servicios/producto';
+import { Producto, ProductoBackend } from '../../api/producto';
 import Swal from 'sweetalert2'; 
 
 @Component({

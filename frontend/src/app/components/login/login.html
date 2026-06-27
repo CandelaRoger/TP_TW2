@@ -1,28 +1,24 @@
-<main>
-    <div class="registro-wrapper">
-        <div class="card-registro">
-            <h2>Iniciar Sesión</h2>
+<div class="registro-wrapper">
+    <div class="card-registro">
+        <h2>Iniciar Sesión</h2>
 
-            <form (ngSubmit)="onSubmit()" #formLogin="ngForm">
-                <div class="grupo-input">
-                    <label>Correo Electrónico</label>
-                    <input type="email" name="email" [(ngModel)]="usuario.email" required
-                        placeholder="correo@ejemplo.com">
-                </div>
-                <div class="grupo-input">
-                    <label>Contraseña</label>
-                    <input type="password" name="password" [(ngModel)]="usuario.password" required
-                        placeholder="••••••••">
-                </div>
-                <button type="submit" class="btn-enviar" [disabled]="!formLogin.valid">
-                    Ingresar
-                </button>
-            </form>
+        <form (ngSubmit)="onSubmit()" #formLogin="ngForm">
+            <div class="grupo-input">
+                <label>Correo Electrónico</label>
+                <input type="email" name="email" [(ngModel)]="usuario.email" required placeholder="correo@ejemplo.com">
+            </div>
+            <div class="grupo-input">
+                <label>Contraseña</label>
+                <input type="password" name="password" [(ngModel)]="usuario.password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-enviar" [disabled]="!formLogin.valid">
+                Ingresar
+            </button>
+        </form>
 
-            <p class="texto-registrarse">
-                ¿No tenés cuenta? <a routerLink="/registro">Registrate</a>
-            </p>
-
+        <div class="texto-registrarse">
+            <p>¿No tenés cuenta? <a routerLink="/registro">Registrate</a></p>
+            <p><a routerLink="">¿Olvidaste tu contraseña?</a></p>
         </div>
     </div>
-</main>
+</div>
