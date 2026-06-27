@@ -3,24 +3,33 @@
   <main class="contenido">
     <h2 class="titulo-seccion">Catalogo</h2>
 
-    <div class="productos-grid">
-      @for (producto of listaProductos; track producto.Id) {
-        <div class="producto-card">
-          <div>
-            <h3>{{ producto.Nombre }}</h3>
-            <p class="descripcion">{{ producto.Descripcion }}</p>
-            <span class="categoria">{{ producto.Clasificacion }}</span>
+    @if (cargando) {
+      <div class="spinner-container">
+        <img src="pokeballl.png" class="spinner-pokeball" alt="Cargando..." />
+        <p class="spinner-texto">Cargando productos...</p>
+      </div>
+    } @else {
+      <div class="productos-grid">
+        @for (producto of listaProductos; track producto.Id) {
+          <div class="producto-card">
+            <img [src]="producto.ImagenUrl" [alt]="producto.Nombre" class="producto-imagen">
+            <div>
+              <h3>{{ producto.Nombre }}</h3>
+              <p class="descripcion">{{ producto.Descripcion }}</p>
+              <span class="categoria">{{ producto.Clasificacion }}</span>
+            </div>
+            
+            <div class="card-footer">
+              <span class="precio">${{ producto.Precio }}</span>
+              <button class="btn-comprar" (click)="agregarProducto(producto)">Agregar</button>
+            </div>
           </div>
-          
-          <div class="card-footer">
-            <span class="precio">${{ producto.Precio }}</span>
-            <button class="btn-comprar" (click)="agregarProducto(producto)">Agregar 🛒</button>
-          </div>
-        </div>
-      } @empty {
-        <p class="vacio-mensaje">Buscando productos en el almacén...</p>
-      }
-    </div>
+        } @empty {
+          <p class="vacio-mensaje">Buscando productos en el almacén...</p>
+        }
+      </div>
+    }
+
   </main>
 
 </div>
