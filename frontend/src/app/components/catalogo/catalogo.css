@@ -87,7 +87,28 @@ body {
   font-weight: 700;
   color: #111827;
 }
+.cart-button {
+  background: transparent;
+  border: 2px solid transparent; 
+  color: #7d712b; 
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px; 
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.cart-button:hover {
+  background-color: #d8f3db; 
+  color: #37993d;
+  border: 2px solid #71c472; 
+}
 
+
+.cart-button.active {
+  background-color: #fcefa6;
+  color: #4a3f00;
+}
 
 .btn-comprar {
   background-color: #22C55E;
