@@ -1,16 +1,17 @@
 import { ProductoRepository } from "../repository/producto.repository.js";
 
-// convertimos el objeto e Prisma (minúsculas) a PascalCase para el front 
-   
+
 function mapearProducto(producto: any) {
-return {
+    return {
         Id: producto.id,
         Nombre: producto.nombre,
         Descripcion: producto.descripcion,
         Clasificacion: producto.clasificacion,
         Precio: producto.precio,
+        ImagenUrl: producto.imagenUrl 
     };
 }
+
 export class ProductoService {
 
     constructor(
@@ -24,19 +25,19 @@ export class ProductoService {
         return productos.map(mapearProducto);
     }
 
-   async obtenerProducto(id: number) {
+    async obtenerProducto(id: number) {
         console.log("[Service] obtenerProducto() - id:", id);
         const producto = await this.productoRepository.obtenerPorId(id);
         return producto ? mapearProducto(producto) : null;
     }
 
     async crearProducto(producto: any) {
-
         const {
             nombre,
             descripcion,
             clasificacion,
-            precio
+            precio,
+            imagenUrl 
         } = producto;
 
         if (!nombre) {
@@ -46,15 +47,18 @@ export class ProductoService {
         if (precio == null || precio <= 0) {
             throw new Error("Precio inválido");
         }
-        console.log("[Service] crearProducto() - datos a insertar:", { nombre, descripcion, clasificacion, precio });
+        
+        console.log("[Service] crearProducto() - datos a insertar:", { nombre, descripcion, clasificacion, precio, imagenUrl });
 
         const nuevoProducto = await this.productoRepository.crear({
             nombre,
             descripcion,
             clasificacion,
-            precio
+            precio,
+            imagenUrl: imagenUrl || '/assets/productos/default.jpg' 
         });
-          console.log("[Service] crearProducto() - producto creado con id:", nuevoProducto.id);
+        
+        console.log("[Service] crearProducto() - producto creado con id:", nuevoProducto.id);
 
         return mapearProducto(nuevoProducto);
     }
