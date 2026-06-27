@@ -2,7 +2,7 @@ import { PrismaClient } from "../prisma/index.js";
 
 const prisma = new PrismaClient();
 
-// usrio fijo mientras no esté conectado el login con el carrito
+// usuario fijo mientras no esté conectado el login con el carrito
 const USUARIO_ID_DEFAULT = 1;
 
 export class CarritoRepository {
@@ -45,9 +45,10 @@ export class CarritoRepository {
         });
     }
 
-    async vaciarCarrito(carritoId: number) {
-        return await prisma.carritoItem.deleteMany({
-            where: { carritoId }
+    async cerrarCarrito(carritoId: number) {
+        return await prisma.carrito.update({
+            where: { id: carritoId },
+            data: { cerrado: true }
         });
     }
 }

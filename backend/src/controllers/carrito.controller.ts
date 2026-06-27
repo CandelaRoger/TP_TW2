@@ -25,11 +25,13 @@ export class CarritoController {
 
         } catch (error: any) {
 
+            console.error("[Controller] POST /api/carrito - error:", error);
+
             if (error.message === "ProductoNoExiste") {
                 return res.status(404).json({ message: "Producto no encontrado" });
             }
 
-            res.status(500).json({ message: "No se pudo agregar el producto al carrito", error });
+            res.status(500).json({ message: "No se pudo agregar el producto al carrito", error: error.message });
         }
     }
 
@@ -39,8 +41,9 @@ export class CarritoController {
             const carrito = await carritoService.obtenerCarrito();
             res.status(200).json(carrito);
 
-        } catch (error) {
-            res.status(500).json({ message: "No se pudo obtener el carrito", error });
+        } catch (error: any) {
+            console.error("[Controller] GET /api/carrito - error:", error);
+            res.status(500).json({ message: "No se pudo obtener el carrito", error: error.message });
         }
     }
 
@@ -52,11 +55,13 @@ export class CarritoController {
 
         } catch (error: any) {
 
+            console.error("[Controller] POST /api/carrito/confirmar - error:", error);
+
             if (error.message === "CarritoVacio") {
                 return res.status(400).json({ message: "El carrito está vacío" });
             }
 
-            res.status(500).json({ message: "No se pudo confirmar el pedido", error });
+            res.status(500).json({ message: "No se pudo confirmar el pedido", error: error.message });
         }
     }
 }

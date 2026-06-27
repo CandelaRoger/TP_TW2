@@ -62,7 +62,7 @@ export class CarritoService {
             throw new Error("CarritoVacio");
         }
 
-        await this.carritoRepository.vaciarCarrito(carrito.id);
+        await this.carritoRepository.cerrarCarrito(carrito.id);
 
         return { mensaje: "Pedido confirmado con éxito" };
     }
