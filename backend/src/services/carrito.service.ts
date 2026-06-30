@@ -1,140 +1,69 @@
 import { CarritoRepository } from "../repository/carrito.repository.js";
 
-export class HttpError extends Error {
-    constructor(public status: number, message: string) {
-        super(message);
-    }
-}
-
-function mapearCarrito(carrito: any) {
-    const items = (carrito.items ?? []).map((item: any) => ({
-        ItemId: item.id,
-        ProductoId: item.productoId,
-        Nombre: item.producto.nombre,
-        Descripcion: item.producto.descripcion,
-        Clasificacion: item.producto.clasificacion,
-        Precio: item.producto.precio,
-        Cantidad: item.cantidad,
-        Subtotal: item.producto.precio * item.cantidad,
-    }));
-
-    const total = items.reduce((acc: number, item: any) => acc + item.Subtotal, 0);
-
-    return {
-        CarritoId: carrito.id,
-        Cerrado: carrito.cerrado,
-        Items: items,
-        Total: total,
-    };
-}
-
 export class CarritoService {
 
-    constructor(
-        private carritoRepository: CarritoRepository
-    ) {}
+    constructor(private carritoRepository: CarritoRepository) { }
 
-    async crearCarrito() {
-        const carrito = await this.carritoRepository.crearCarrito();
-        return { CarritoId: carrito.id };
+    private async obtenerOCrearCarrito() {
+        const carritoExistente = await this.carritoRepository.obtenerCarritoAbierto();
+
+        if (carritoExistente) {
+            return carritoExistente;
+        }
+
+        return await this.carritoRepository.crearCarrito();
     }
 
-    async obtenerCarrito(carritoId: number) {
-        const carrito = await this.carritoRepository.obtenerPorId(carritoId);
-
-        if (!carrito) {
-            throw new HttpError(404, "Carrito no encontrado");
-        }
-
-        return mapearCarrito(carrito);
-    }
-
-    async agregarItem(carritoId: number, productoId: number, cantidad: number = 1) {
-
-        if (!productoId) {
-            throw new HttpError(400, "productoId es obligatorio");
-        }
-
-        if (!Number.isInteger(cantidad) || cantidad <= 0) {
-            throw new HttpError(400, "cantidad debe ser un entero mayor a 0");
-        }
-
-        const carrito = await this.carritoRepository.obtenerPorId(carritoId);
-        if (!carrito) {
-            throw new HttpError(404, "Carrito no encontrado");
-        }
+    async agregarProducto(productoId: number, cantidad: number) {
 
         const producto = await this.carritoRepository.obtenerProducto(productoId);
+
         if (!producto) {
-            throw new HttpError(404, "Producto no encontrado");
+            throw new Error("ProductoNoExiste");
         }
 
-        const itemExistente = await this.carritoRepository.obtenerItem(carritoId, productoId);
+        const carrito = await this.obtenerOCrearCarrito();
+
+        const itemExistente = await this.carritoRepository.obtenerItem(carrito.id, productoId);
 
         if (itemExistente) {
-            await this.carritoRepository.incrementarCantidad(itemExistente.id, cantidad);
+            await this.carritoRepository.incrementarItem(itemExistente.id, cantidad);
         } else {
-            await this.carritoRepository.agregarItem(carritoId, productoId, cantidad);
+            await this.carritoRepository.crearItem(carrito.id, productoId, cantidad);
         }
 
-        return this.obtenerCarrito(carritoId);
+        return { mensaje: `${producto.nombre} se agregó correctamente al carrito` };
     }
 
-    async actualizarCantidad(carritoId: number, itemId: number, cantidad: number) {
+    async obtenerCarrito() {
+        const carrito = await this.carritoRepository.obtenerCarritoAbierto();
 
-        if (!Number.isInteger(cantidad) || cantidad <= 0) {
-            throw new HttpError(400, "cantidad debe ser un entero mayor a 0");
-        }
-
-        const item = await this.carritoRepository.obtenerItemPorId(carritoId, itemId);
-        if (!item) {
-            throw new HttpError(404, "Item no encontrado en el carrito");
-        }
-
-        await this.carritoRepository.actualizarCantidad(itemId, cantidad);
-
-        return this.obtenerCarrito(carritoId);
-    }
-
-    async eliminarItem(carritoId: number, itemId: number) {
-
-        const item = await this.carritoRepository.obtenerItemPorId(carritoId, itemId);
-        if (!item) {
-            throw new HttpError(404, "Item no encontrado en el carrito");
-        }
-
-        await this.carritoRepository.eliminarItem(itemId);
-
-        return this.obtenerCarrito(carritoId);
-    }
-
-    async vaciarCarrito(carritoId: number) {
-
-        const carrito = await this.carritoRepository.obtenerPorId(carritoId);
         if (!carrito) {
-            throw new HttpError(404, "Carrito no encontrado");
+            return { Items: [], Total: 0 };
         }
 
-        await this.carritoRepository.vaciarCarrito(carritoId);
+        const items = carrito.items.map((item: any) => ({
+            Id: item.id,
+            Nombre: item.producto.nombre,
+            Precio: item.producto.precio,
+            Cantidad: item.cantidad,
+            Subtotal: item.producto.precio * item.cantidad
+        }));
 
-        return this.obtenerCarrito(carritoId);
+        const total = items.reduce((acc: number, item: any) => acc + item.Subtotal, 0);
+
+        return { Items: items, Total: total };
     }
 
-    async finalizarPedido(carritoId: number) {
+    async confirmarPedido() {
+        const carrito = await this.carritoRepository.obtenerCarritoAbierto();
 
-        const carrito = await this.carritoRepository.obtenerPorId(carritoId);
-        if (!carrito) {
-            throw new HttpError(404, "Carrito no encontrado");
+        if (!carrito || carrito.items.length === 0) {
+            throw new Error("CarritoVacio");
         }
 
-        if (!carrito.items || carrito.items.length === 0) {
-            throw new HttpError(400, "El carrito está vacío");
-        }
+        await this.carritoRepository.cerrarCarrito(carrito.id);
 
-        const resumen = mapearCarrito(carrito);
-        await this.carritoRepository.cerrarCarrito(carritoId);
-
-        return resumen;
+        return { mensaje: "Pedido confirmado con éxito" };
     }
-    // deberiamos usar una vista o un framework para mostrar estos msj de error, chequear cmo conectarlo
 }

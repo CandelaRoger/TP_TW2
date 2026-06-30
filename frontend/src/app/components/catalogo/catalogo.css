@@ -87,7 +87,28 @@ body {
   font-weight: 700;
   color: #111827;
 }
+.cart-button {
+  background: transparent;
+  border: 2px solid transparent; 
+  color: #7d712b; 
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px; 
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.cart-button:hover {
+  background-color: #d8f3db; 
+  color: #37993d;
+  border: 2px solid #71c472; 
+}
 
+
+.cart-button.active {
+  background-color: #fcefa6;
+  color: #4a3f00;
+}
 
 .btn-comprar {
   background-color: #22C55E;
@@ -115,4 +136,28 @@ body {
   grid-column: 1 / -1;
   text-align: center;
   padding: 3rem;
+}
+
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  gap: 16px;
+}
+
+.spinner-pokeball {
+  width: 80px;
+  height: 80px;
+  animation: girar 0.8s linear infinite;
+}
+
+.spinner-texto {
+  font-size: 14px;
+  color: #666;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
 }

@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Producto, CarritoItemBackend } from '../../servicios/producto'; 
+import { Producto, CarritoItemBackend } from '../../servicios/producto';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-carrito',
@@ -20,46 +21,49 @@ export class CarritoComponent implements OnInit {
     private cd: ChangeDetectorRef
   ) {}
 
- ngOnInit(): void {
-    console.log('[Frontend] Cargando carrito desde el backend...');
-
+  ngOnInit(): void {
     this.productoService.obtenerCarrito().subscribe({
       next: (carrito) => {
-        console.log('[Frontend] Respuesta del backend (carrito):', carrito);
-     this.itemsCarrito = carrito?.Items ?? [];
+        this.itemsCarrito = carrito?.Items ?? [];
         this.total = carrito?.Total ?? 0;
-
         this.cd.detectChanges();
       },
-      error: (err) => {
-        console.error('[Frontend] Error al obtener el carrito:', err);
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'No se pudo cargar el carrito.'
+        });
       }
     });
-  }
-  calcularTotal(): void {
-    this.total = this.itemsCarrito.reduce((acc, item) => acc + (item.Precio * (item.Cantidad || 1)), 0);
   }
 
   volverAlCatalogo(): void {
-    this.router.navigate(['/productos']); 
+    this.router.navigate(['/productos']);
   }
 
-   finalizarCompra(): void {
-    console.log('[Frontend] Confirmando pedido...');
-
-    this.productoService.finalizarPedido().subscribe({
-      next: (resumen) => {
-        console.log('[Frontend] Pedido finalizado, resumen:', resumen);
-        alert('Pedido realizado con éxito. Gracias por tu compra en Mundo Electrónico.');
-        this.itemsCarrito = [];
-        this.total = 0;
-
-        this.cd.detectChanges();
-        this.volverAlCatalogo();
+  finalizarCompra(): void {
+    this.productoService.confirmarPedido().subscribe({
+      next: () => {
+        Swal.fire({
+          title: '¡Compra exitosa!',
+          text: 'Gracias por su compra en Mundo Pokemon :)',
+          icon: 'success',
+          confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.itemsCarrito = [];
+          this.total = 0;
+          this.cd.detectChanges();
+          this.volverAlCatalogo();
+        });
       },
-      error: (err) => {
-        console.error('[Frontend] Error al finalizar el pedido:', err);
-        alert('No se pudo confirmar el pedido.');
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'No se pudo confirmar el pedido. Intentá de nuevo.'
+        });
       }
     });
-}}
+  }
+}
