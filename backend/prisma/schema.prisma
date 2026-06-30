@@ -1,0 +1,61 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/prisma"
+  previewFeatures = ["multiSchema"] 
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+  schemas  = ["dbo"]               
+}
+
+model usuario {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique @db.VarChar(100)
+  password  String    @db.VarChar(255)
+  nombre    String    @db.VarChar(100)
+  apellido  String    @db.VarChar(100)
+  direccion String    @db.VarChar(255)
+  carritos  carrito[]
+
+  @@map("Usuarios")
+  @@schema("dbo") 
+}
+
+model producto {
+  id            Int           @id @default(autoincrement())
+  nombre        String        @db.VarChar(100)
+  descripcion   String        @db.VarChar(255)
+  clasificacion String        @db.VarChar(100)
+  precio        Float
+  imagenUrl     String        @map("ImagenUrl") @db.VarChar(500)
+  itemsCarrito  carritoItem[]
+
+  @@map("Productos")
+  @@schema("dbo") 
+}
+
+model carrito {
+  id        Int           @id @default(autoincrement())
+  usuarioId Int           @map("UsuarioId")
+  usuario   usuario       @relation(fields: [usuarioId], references: [id])
+  creadoEn  DateTime      @default(now()) @map("creadoEn")
+  cerrado   Boolean       @default(false)
+  items     carritoItem[]
+
+  @@map("Carritos")
+  @@schema("dbo") 
+}
+
+model carritoItem {
+  id         Int      @id @default(autoincrement())
+  carritoId  Int      @map("CarritoId")
+  carrito    carrito  @relation(fields: [carritoId], references: [id])
+  productoId Int      @map("ProductoId")
+  producto   producto @relation(fields: [productoId], references: [id])
+  cantidad   Int      @default(1)
+
+  @@map("CarritoItems")
+  @@schema("dbo") 
+}

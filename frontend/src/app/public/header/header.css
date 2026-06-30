@@ -1,0 +1,57 @@
+.header-pokemon {
+  background-color: #fcefa6; 
+  padding: 1.2rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #fcefa6; 
+  box-shadow: 0 4px 20px rgba(244, 211, 94, 0.15); 
+}
+
+.logo-container h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
+}
+
+.logo-mundo {
+  color: #4a3f00;
+}
+
+
+.logo-poke {
+  color: #f4d35e;
+  text-shadow: 1px 1px 0px #494219; 
+}
+
+.header-actions {
+  display: flex;
+  column-gap: 1.5rem;
+  align-items: center;
+}
+
+.cart-button {
+  background: transparent;
+  border: 2px solid transparent; 
+  color: #7d712b; 
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px; 
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.cart-button:hover {
+  background-color: #d8f3db; 
+  color: #37993d;
+  border: 2px solid #71c472; 
+}
+
+
+.cart-button.active {
+  background-color: #fcefa6;
+  color: #4a3f00;
+}
