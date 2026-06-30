@@ -7,10 +7,10 @@ import { Login} from './pages/login/login';
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'landing', pathMatch: 'full' }, 
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },
   { path: 'productos', component: CatalogoComponent },
   { path: 'carrito', component: CarritoComponent },
   { path: 'landing', component: Landing },
-  { path: 'login', component: Login } ,
-  { path: 'registro', component: RegistroComponent}
+  { path: 'login', component: Login },
+  { path: 'registro', component: RegistroComponent }
 ];

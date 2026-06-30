@@ -10,10 +10,11 @@
 
 .logo-container h1 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 800;
   letter-spacing: 0.5px;
   font-family: 'Segoe UI', sans-serif;
+  cursor: pointer;
 }
 
 .logo-mundo {
@@ -23,7 +24,7 @@
 
 .logo-poke {
   color: #f4d35e;
-  text-shadow: 1px 1px 0px #7d712b; 
+  text-shadow: 1px 1px 0px #494219; 
 }
 
 .header-actions {
