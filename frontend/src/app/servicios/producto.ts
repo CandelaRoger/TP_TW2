@@ -1,30 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ProductoBackend, CarritoBackend } from '../interfaces/producto.interface';
 
-export interface ProductoBackend {
-  Id: number;
-  Nombre: string;
-  Descripcion: string;
-  Clasificacion: string;
-  Precio: number;
-  ImagenUrl: string;
-}
-
-export interface CarritoItemBackend {
-  Id: number;
-  Nombre: string;
-  Clasificacion: string; 
-  Precio: number;
-  Cantidad: number;
-  Subtotal: number;
-
-}
-
-export interface CarritoBackend {
-  Items: CarritoItemBackend[];
-  Total: number;
-}
 
 @Injectable({
   providedIn: 'root',

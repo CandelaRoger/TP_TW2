@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { UsuarioRepository } from "../repository/usuario.repository.js";
+import { error } from "node:console";
 
 export class UsuarioController {
 
@@ -9,10 +10,25 @@ export class UsuarioController {
 
         const { nombre, apellido, email, password, direccion } = req.body;
 
-        if (!nombre || !apellido || !email || !password || !direccion) {
+        const campos =[nombre, apellido,email,password, direccion];
+
+        if (campos.some(campo=> !campo)
+        ) {
             return res.status(400).json({
-                error: "Todos los campos son obligatorios."
+                error: "Campos vacios"
             });
+        }
+        const passwordInvalida=
+              password.length < 8 || 
+              !/[A-Z]/.test(password) ||
+              !/[0-9]/.test(password) ||
+              !/[a-z]/.test(password) ||
+              !/[!#$%&*]/.test(password);
+        
+        if(passwordInvalida){
+            return res.status(400).json({
+                error: "La contraseña debe tener al menos 8 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial"
+            })
         }
 
         try {
@@ -25,6 +41,7 @@ export class UsuarioController {
                 direccion
             });
 
+            //res.redirect(/login); 
             res.status(201).json({
                 message: "Usuario registrado con éxito.",
                 usuario

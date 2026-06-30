@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule, NgForm } from '@angular/forms'; 
 import { Router } from '@angular/router';
 import { Producto} from '../../servicios/producto';
 
@@ -25,7 +25,8 @@ export class RegistroComponent {
 
   constructor(
     private productoService: Producto,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   onSubmit(): void {
@@ -36,6 +37,7 @@ export class RegistroComponent {
       },
       error: (err) => {
         this.mensajeError = err.error?.error || 'Ocurrió un error en el registro.';
+        this.cdr.detectChanges();
       }
     });
   }

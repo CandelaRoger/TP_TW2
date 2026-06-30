@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
 import { CatalogoComponent } from './components/catalogo/catalogo';
 import { CarritoComponent } from './components/carrito/carrito';
-import { RegistroComponent } from './components/registro/registro';
-import { Landing} from './components/landing/landing';
-import { Login} from './components/login/login';
+import { RegistroComponent } from './pages/registro/registro';
+import { Landing} from './public/landing/landing';
+import { Login} from './pages/login/login';
 
 
 export const routes: Routes = [

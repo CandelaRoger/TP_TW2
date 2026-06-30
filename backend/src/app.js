@@ -19,7 +19,6 @@ const config = {
     cryptoCredentialsDetails: { minVersion: 'TLSv1' }  
   }
 };
-
 app.get('/api/datos', async (req, res) => {
   try {
     const result = await sql.query`SELECT * FROM Productos`; 

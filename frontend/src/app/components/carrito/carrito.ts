@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { Producto, CarritoItemBackend } from '../../servicios/producto';
+import { Producto } from '../../servicios/producto';
+import { CarritoItemBackend } from '../../interfaces/producto.interface';
 import Swal from 'sweetalert2';
 
 @Component({
