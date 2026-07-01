@@ -16,6 +16,9 @@ export class CarritoComponent implements OnInit {
   itemsCarrito: CarritoItemBackend[] = [];
   total: number = 0;
 
+  private readonly CANTIDAD_MINIMA = 1;
+  private readonly CANTIDAD_MAXIMA = 99;
+
   constructor(
     private productoService: Producto,
     private router: Router,
@@ -41,6 +44,84 @@ export class CarritoComponent implements OnInit {
 
   volverAlCatalogo(): void {
     this.router.navigate(['/productos']);
+  }
+
+  private recalcularTotal(): void {
+    this.total = this.itemsCarrito.reduce((acc, item) => acc + item.Subtotal, 0);
+  }
+
+  incrementarCantidad(item: CarritoItemBackend): void {
+    if (item.Cantidad >= this.CANTIDAD_MAXIMA) {
+      return;
+    }
+    const nuevaCantidad = item.Cantidad + 1;
+    this.productoService.actualizarCantidadCarrito(item.Id, nuevaCantidad).subscribe({
+      next: () => {
+        item.Cantidad = nuevaCantidad;
+        item.Subtotal = item.Precio * nuevaCantidad;
+        this.recalcularTotal();
+        this.cd.detectChanges();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'No se pudo actualizar la cantidad.'
+        });
+      }
+    });
+  }
+
+  decrementarCantidad(item: CarritoItemBackend): void {
+    if (item.Cantidad <= this.CANTIDAD_MINIMA) {
+      return;
+    }
+    const nuevaCantidad = item.Cantidad - 1;
+    this.productoService.actualizarCantidadCarrito(item.Id, nuevaCantidad).subscribe({
+      next: () => {
+        item.Cantidad = nuevaCantidad;
+        item.Subtotal = item.Precio * nuevaCantidad;
+        this.recalcularTotal();
+        this.cd.detectChanges();
+      },
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'No se pudo actualizar la cantidad.'
+        });
+      }
+    });
+  }
+
+  eliminarItem(item: CarritoItemBackend): void {
+    Swal.fire({
+      title: '¿Eliminar producto?',
+      text: `Se quitará "${item.Nombre}" del carrito.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#EF4444'
+    }).then((resultado) => {
+      if (!resultado.isConfirmed) {
+        return;
+      }
+      this.productoService.eliminarDelCarrito(item.Id).subscribe({
+        next: () => {
+          this.itemsCarrito = this.itemsCarrito.filter((i) => i.Id !== item.Id);
+          this.recalcularTotal();
+          this.cd.detectChanges();
+        },
+        error: () => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'No se pudo eliminar el producto.'
+          });
+        }
+      });
+    });
   }
 
   finalizarCompra(): void {

@@ -45,6 +45,25 @@ export class CarritoRepository {
         });
     }
 
+    async obtenerItemPorId(itemId: number) {
+        return await prisma.carritoItem.findUnique({
+            where: { id: itemId }
+        });
+    }
+
+    async actualizarCantidadItem(itemId: number, cantidad: number) {
+        return await prisma.carritoItem.update({
+            where: { id: itemId },
+            data: { cantidad }
+        });
+    }
+
+    async eliminarItem(itemId: number) {
+        return await prisma.carritoItem.delete({
+            where: { id: itemId }
+        });
+    }
+
     async cerrarCarrito(carritoId: number) {
         return await prisma.carrito.update({
             where: { id: carritoId },

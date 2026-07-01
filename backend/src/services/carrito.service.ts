@@ -35,6 +35,36 @@ export class CarritoService {
         return { mensaje: `${producto.nombre} se agregó correctamente al carrito` };
     }
 
+    async actualizarCantidad(itemId: number, cantidad: number) {
+
+        const item = await this.carritoRepository.obtenerItemPorId(itemId);
+
+        if (!item) {
+            throw new Error("ItemNoExiste");
+        }
+
+        if (cantidad < 1) {
+            throw new Error("CantidadInvalida");
+        }
+
+        await this.carritoRepository.actualizarCantidadItem(itemId, cantidad);
+
+        return { mensaje: "Cantidad actualizada correctamente" };
+    }
+
+    async eliminarProducto(itemId: number) {
+
+        const item = await this.carritoRepository.obtenerItemPorId(itemId);
+
+        if (!item) {
+            throw new Error("ItemNoExiste");
+        }
+
+        await this.carritoRepository.eliminarItem(itemId);
+
+        return { mensaje: "Producto eliminado del carrito" };
+    }
+
     async obtenerCarrito() {
         const carrito = await this.carritoRepository.obtenerCarritoAbierto();
 

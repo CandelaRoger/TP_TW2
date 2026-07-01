@@ -28,6 +28,14 @@ export class Producto {
     return this.http.post<{ mensaje: string }>(`${this.apiUrl}/carrito/confirmar`, {});
   }
 
+  actualizarCantidadCarrito(itemId: number, cantidad: number): Observable<{ mensaje: string }> {
+    return this.http.put<{ mensaje: string }>(`${this.apiUrl}/carrito/${itemId}`, { cantidad });
+  }
+
+  eliminarDelCarrito(itemId: number): Observable<{ mensaje: string }> {
+    return this.http.delete<{ mensaje: string }>(`${this.apiUrl}/carrito/${itemId}`);
+  }
+
 registrarUsuario(usuario: any): Observable<any> {
   const urlRegistro = 'http://localhost:3000/api/usuario/registro';
   return this.http.post(urlRegistro, usuario);

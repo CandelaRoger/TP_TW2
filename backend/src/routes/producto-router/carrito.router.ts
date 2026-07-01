@@ -23,4 +23,16 @@ router.post(
     controller.confirmarPedido
 );
 
+// actualizar cantidad de un item
+router.put(
+    "/:itemId",
+    controller.actualizarCantidad
+);
+
+// eliminar un item
+router.delete(
+    "/:itemId",
+    controller.eliminarProducto
+);
+
 export default router;
