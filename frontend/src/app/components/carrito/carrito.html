@@ -32,11 +32,13 @@
       <div>${{ item.Subtotal }}</div>
     </div>
 
-    <button
-      type="button"
-      class="btn-eliminar"
-      (click)="eliminarItem(item)"
-      aria-label="Eliminar producto">🗑</button>
+<button
+  type="button"
+  class="btn-eliminar"
+  (click)="eliminarItem(item)"
+  aria-label="Eliminar producto">
+  Eliminar
+</button>
   </div>
 } @empty {
   <div class="carrito-vacio">
