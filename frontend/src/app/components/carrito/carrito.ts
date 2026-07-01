@@ -132,7 +132,8 @@ export class CarritoComponent implements OnInit {
           title: '¡Compra exitosa!',
           text: 'Gracias por su compra en Mundo Pokemon :)',
           icon: 'success',
-          confirmButtonText: 'Aceptar'
+          confirmButtonText: 'Aceptar',
+          confirmButtonColor: '#C4B5FD'
         }).then(() => {
           this.itemsCarrito = [];
           this.total = 0;
