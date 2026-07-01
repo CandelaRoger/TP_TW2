@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Producto } from '../../api/producto';
 import { CarritoItemBackend } from '../../interfaces/producto.interface';
+import { PokemonComponent } from '../pokemon/pokemon';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PokemonComponent],
   templateUrl: './carrito.html',
   styleUrl: './carrito.css'
 })

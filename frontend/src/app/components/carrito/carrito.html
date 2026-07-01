@@ -5,41 +5,15 @@
 
     <div class="tabla-pedido">
      @for (item of itemsCarrito; track item.Id) {
-  <div class="item-fila">
-    <div class="item-info">
-      <h3>{{ item.Nombre }}</h3>
-<!-- <p>Categoría: {{ item.Clasificacion }}</p> -->    </div>
-
-    <div class="cantidad-control">
-      <span class="cantidad-valor">{{ item.Cantidad }}</span>
-      <div class="cantidad-flechas">
-        <button
-          type="button"
-          class="flecha flecha-arriba"
-          (click)="incrementarCantidad(item)"
-          [disabled]="item.Cantidad >= 99"
-          aria-label="Aumentar cantidad">▲</button>
-        <button
-          type="button"
-          class="flecha flecha-abajo"
-          (click)="decrementarCantidad(item)"
-          [disabled]="item.Cantidad <= 1"
-          aria-label="Disminuir cantidad">▼</button>
-      </div>
-    </div>
-
-    <div class="item-precio-cant">
-      <div>${{ item.Subtotal }}</div>
-    </div>
-
-<button
-  type="button"
-  class="btn-eliminar"
-  (click)="eliminarItem(item)"
-  aria-label="Eliminar producto">
-  Eliminar
-</button>
-  </div>
+        <app-pokemon 
+          vista="carrito"
+          [datos]="item"
+          [cantidad]="item.Cantidad"
+          [subtotal]="item.Subtotal"
+          (onIncrementar)="incrementarCantidad($event)"
+          (onDecrementar)="decrementarCantidad($event)"
+          (onEliminar)="eliminarItem($event)">
+        </app-pokemon>
 } @empty {
   <div class="carrito-vacio">
     <p>No agregaste productos aún</p>

@@ -2,11 +2,12 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Producto } from '../../api/producto';
 import { ProductoBackend } from '../../interfaces/producto.interface';
+import { PokemonComponent } from '../pokemon/pokemon';
 import Swal from 'sweetalert2'; 
 
 @Component({
   selector: 'app-catalogo',
-  imports: [CommonModule],
+  imports: [CommonModule, PokemonComponent],
   templateUrl: './catalogo.html',
   styleUrl: './catalogo.css',
 })

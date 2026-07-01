@@ -21,38 +21,13 @@
     } @else {
       <div class="productos-grid">
         @for (producto of listaProductos; track producto.Id) {
-          <div class="producto-card">
-            <img [src]="producto.ImagenUrl" [alt]="producto.Nombre" class="producto-imagen">
-            <div>
-              <h3>{{ producto.Nombre }}</h3>
-              <p class="descripcion">{{ producto.Descripcion }}</p>
-              <span class="categoria">{{ producto.Clasificacion }}</span>
-            </div>
-            <div class="cantidad-selector">
-              <span class="cantidad-label">Cantidad</span>
-              <div class="cantidad-control">
-                <span class="cantidad-valor">{{ obtenerCantidad(producto) }}</span>
-                <div class="cantidad-flechas">
-                  <button
-                    type="button"
-                    class="flecha flecha-arriba"
-                    (click)="incrementarCantidad(producto)"
-                    [disabled]="obtenerCantidad(producto) >= 99"
-                    aria-label="Aumentar cantidad">▲</button>
-                  <button
-                    type="button"
-                    class="flecha flecha-abajo"
-                    (click)="decrementarCantidad(producto)"
-                    [disabled]="obtenerCantidad(producto) <= 1"
-                    aria-label="Disminuir cantidad">▼</button>
-                </div>
-              </div>
-            </div>
-            <div class="card-footer">
-              <span class="precio">${{ producto.Precio }}</span>
-              <button class="btn-comprar" (click)="agregarProducto(producto)">Agregar</button>
-            </div>
-          </div>
+          <app-pokemon 
+            [datos]="producto"
+            [cantidad]="obtenerCantidad(producto)"
+            (onIncrementar)="incrementarCantidad($event)"
+            (onDecrementar)="decrementarCantidad($event)"
+            (onAgregar)="agregarProducto($event)">
+          </app-pokemon>
         } @empty {
           <p class="vacio-mensaje">Buscando productos en el almacén...</p>
         }

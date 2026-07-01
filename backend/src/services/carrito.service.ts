@@ -75,9 +75,11 @@ export class CarritoService {
         const items = carrito.items.map((item: any) => ({
             Id: item.id,
             Nombre: item.producto.nombre,
+            Clasificacion: item.producto.clasificacion,
             Precio: item.producto.precio,
             Cantidad: item.cantidad,
-            Subtotal: item.producto.precio * item.cantidad
+            Subtotal: item.producto.precio * item.cantidad,
+            ImagenUrl: item.producto.imagenUrl
         }));
 
         const total = items.reduce((acc: number, item: any) => acc + item.Subtotal, 0);

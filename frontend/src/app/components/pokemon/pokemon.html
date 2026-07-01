@@ -1,0 +1,84 @@
+@if(datos) {
+
+    @if (vista === 'carrito') {
+    <div class="item-fila">
+      <div class="item-info">
+        <img [src]="datos.ImagenUrl" [alt]="datos.nombre" class="carrito-producto-imagen">
+        <h3>{{ datos.Nombre }}</h3>
+        <p>{{ datos.Clasificacion }}</p>
+      </div>
+
+      <div class="cantidad-control">
+        <span class="cantidad-valor">{{ cantidad }}</span>
+        <div class="cantidad-flechas">
+          <button
+            type="button"
+            class="flecha flecha-arriba"
+            (click)="onIncrementar.emit(datos)"
+            [disabled]="cantidad >= 99"
+            aria-label="Aumentar cantidad">▲</button>
+          <button
+            type="button"
+            class="flecha flecha-abajo"
+            (click)="onDecrementar.emit(datos)"
+            [disabled]="cantidad <= 1"
+            aria-label="Disminuir cantidad">▼</button>
+        </div>
+      </div>
+
+      <div class="item-precio-cant">
+        <div>${{ subtotal }}</div>
+      </div>
+
+      <button
+        type="button"
+        class="btn-eliminar"
+        (click)="onEliminar.emit(datos)"
+        aria-label="Eliminar producto">
+        Eliminar
+      </button>
+    </div>
+  }
+
+  @else {
+
+    <div class="producto-card">
+        <img [src]="datos.ImagenUrl" [alt]="datos.nombre" class="producto-imagen">
+
+        <div>
+            <h3>{{ datos.nombre }}</h3>
+            <p class="descripcion">{{ datos.Descripcion }}</p>
+            <span class="categoria">{{ datos.Clasificacion }}</span>
+        </div>
+
+        <div class="cantidad-selector">
+            <span class="cantidad-label">Cantidad</span>
+            <div class="cantidad-control">
+                <span class="cantidad-valor">{{ cantidad }}</span>
+
+                <div class="cantidad-flechas">
+                    <button
+                       type="button"
+                       class="flecha flecha-arriba"
+                       (click)="onIncrementar.emit(datos)"
+                       [disabled]="cantidad >= 99"
+                       aria-label="Aumentar cantidad">▲</button>
+                    <button
+                       type="button"
+                       class="flecha flecha-abajo"
+                       (click)="onDecrementar.emit(datos)"
+                       [disabled]="cantidad <= 1"
+                       aria-label="Disminuir cantidad">▼</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <span class="precio">${{ datos.precio }}</span>
+            <button class="btn-comprar" (click)="onAgregar.emit(datos)">Agregar</button>
+        </div>
+    </div>
+
+            }
+    
+}
