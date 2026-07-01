@@ -128,6 +128,8 @@ export class CarritoComponent implements OnInit {
   finalizarCompra(): void {
     this.productoService.confirmarPedido().subscribe({
       next: () => {
+         const sonido = new Audio('assets/sounds/confirmarCompra.mp3');
+        sonido.play();
         Swal.fire({
           title: '¡Compra exitosa!',
           text: 'Gracias por su compra en Mundo Pokemon :)',

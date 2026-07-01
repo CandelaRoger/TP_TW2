@@ -61,6 +61,8 @@ export class CatalogoComponent implements OnInit {
     const cantidad = this.obtenerCantidad(producto);
     this.productoService.agregarAlCarrito(producto.Id, cantidad).subscribe({
       next: () => {
+         const sonido = new Audio('assets/sounds/agregarAlCarrito.mp3');
+        sonido.play();
         Swal.fire({
           title: '¡Agregado!',
           text: `${cantidad} x ${producto.Nombre} se agregó al carrito.`,
