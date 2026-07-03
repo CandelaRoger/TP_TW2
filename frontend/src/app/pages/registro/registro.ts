@@ -32,7 +32,6 @@ export class RegistroComponent {
   onSubmit(): void {
     this.productoService.registrarUsuario(this.usuario).subscribe({
       next: (res) => {
-        alert('Registro exitoso');
         this.router.navigate(['/login']); 
       },
       error: (err) => {
