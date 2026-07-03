@@ -55,3 +55,26 @@
   background-color: #fcefa6;
   color: #4a3f00;
 }
+
+.logout-button {
+  background: transparent;
+  border: 2px solid transparent; 
+  color: #d63333; 
+  padding: 0.6rem 1.2rem;
+  border-radius: 10px; 
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.logout-button:hover {
+  background-color: #eed2d2; 
+  color: #d63333;
+  border: 2px solid #d63333; 
+}
+
+
+.logout-button.active {
+  background-color: #fcefa6;
+  color: #4a3f00;
+}

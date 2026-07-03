@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Producto } from '../../api/producto';
+import { Producto } from '../../api/services/producto/producto.service';
 import { ProductoBackend } from '../../interfaces/producto.interface';
 import { PokemonComponent } from '../pokemon/pokemon';
 import Swal from 'sweetalert2'; 

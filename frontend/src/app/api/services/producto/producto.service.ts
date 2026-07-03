@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ProductoBackend, CarritoBackend } from '../interfaces/producto.interface';
+import { ProductoBackend, CarritoBackend } from '../../../interfaces/producto.interface';
 
 
 @Injectable({

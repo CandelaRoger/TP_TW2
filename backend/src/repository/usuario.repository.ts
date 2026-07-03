@@ -24,4 +24,13 @@ export class UsuarioRepository {
 
     }
 
+    async buscarPorEmail(email: string) {
+        return await prisma.usuario.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+    }
 }
+

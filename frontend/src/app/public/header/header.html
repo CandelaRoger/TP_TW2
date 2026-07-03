@@ -1,14 +1,21 @@
 <header class="header-pokemon">
-    <div class="logo-container" routerLink="/landing">
-      <h1>
-        <span class="logo-mundo">Mundo</span>
-        <span class="logo-poke"> Pokémon</span>
-      </h1>
-    </div>
-    <div class="header-actions">
-      <button class="cart-button" routerLink="/carrito">Ver Carrito</button>
-      <button class="cart-button" routerLink="/productos">Ver Productos</button>
+  <div class="logo-container" routerLink="/landing">
+    <h1>
+      <span class="logo-mundo">Mundo</span>
+      <span class="logo-poke"> Pokémon</span>
+    </h1>
+  </div>
+  <div class="header-actions">
+
+    <ng-container *ngIf="!authService.estaLogueado()">
       <button class="cart-button" routerLink="/login">Iniciar Sesión</button>
       <button class="cart-button" routerLink="/registro">Registrarse</button>
-    </div>
-  </header>
+    </ng-container>
+
+    <ng-container *ngIf="authService.estaLogueado()">
+      <button class="cart-button" routerLink="/carrito">Ver Carrito</button>
+      <button class="cart-button" routerLink="/productos">Ver Productos</button>
+      <button class="logout-button" (click)="logout()">Cerrar Sesion</button>
+    </ng-container>
+  </div>
+</header>
