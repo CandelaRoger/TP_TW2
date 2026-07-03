@@ -29,107 +29,7 @@ body {
   gap: 1.5rem;
 }
 
-.producto-card {
-  background-color: #FFFFFF; 
-  border: 1px solid #E5E7EB; 
-  border-radius: 12px;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
 
-.producto-card:hover {
-  transform: translateY(-5px);
-  border-color: #22C55E; 
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-}
-
-.producto-card h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
-  color: #1F2937; 
-  font-weight: 700;
-}
-
-.descripcion {
-  color: #4B5563; 
-  font-size: 0.95rem;
-  line-height: 1.4;
-  margin-bottom: 1rem;
-  min-height: 45px;
-}
-
-.categoria {
-  align-self: flex-start;
-  background-color: #F0FDF4; 
-  color: #16A34A; 
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.card-footer {
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-top: 1px solid #F3F4F6;
-  padding-top: 1rem;
-}
-
-.precio {
-  font-size: 1.4rem;
-  font-weight: 700;
-  color: #111827;
-}
-.cart-button {
-  background: transparent;
-  border: 2px solid transparent; 
-  color: #7d712b; 
-  padding: 0.6rem 1.2rem;
-  border-radius: 10px; 
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.cart-button:hover {
-  background-color: #d8f3db; 
-  color: #37993d;
-  border: 2px solid #71c472; 
-}
-
-
-.cart-button.active {
-  background-color: #fcefa6;
-  color: #4a3f00;
-}
-
-.btn-comprar {
-  background-color: #22C55E;
-  color: #FFFFFF; 
-  border: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 8px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(34, 197, 94, 0.2);
-  transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btn-comprar:hover {
-  background-color: #16A34A;
-  transform: scale(1.03);
-}
-
-.btn-comprar:active {
-  transform: scale(0.98);
-}
 
 .vacio-mensaje {
   color: #6B7280;
@@ -161,3 +61,35 @@ body {
 @keyframes girar {
   to { transform: rotate(360deg); }
 }
+
+@media (max-width: 768px) {
+  .contenido {
+    padding: 1.2rem; 
+}
+
+@media (max-width: 576px) {
+ .contenido {
+    padding: 0.5rem;
+  }
+
+  .titulo-seccion {
+    font-size: 1.25rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .productos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+  }
+
+  .vacio-mensaje {
+    padding: 1.5rem;
+    font-size: 0.95rem;
+  }
+
+  .spinner-pokeball {
+    width: 60px;
+    height: 60px;
+  }
+
+}}

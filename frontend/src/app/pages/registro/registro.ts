@@ -2,7 +2,7 @@ import { Component,ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms'; 
 import { Router } from '@angular/router';
-import { Producto} from '../../api/producto';
+import { Producto} from '../../api/services/producto/producto.service';
 
 @Component({
   selector: 'app-registro',
@@ -32,8 +32,7 @@ export class RegistroComponent {
   onSubmit(): void {
     this.productoService.registrarUsuario(this.usuario).subscribe({
       next: (res) => {
-        alert('Registro exitoso');
-        this.router.navigate(['/productos']); 
+        this.router.navigate(['/login']); 
       },
       error: (err) => {
         this.mensajeError = err.error?.error || 'Ocurrió un error en el registro.';

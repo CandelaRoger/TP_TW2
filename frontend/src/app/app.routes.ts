@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { CatalogoComponent } from './components/catalogo/catalogo';
 import { CarritoComponent } from './components/carrito/carrito';
 import { RegistroComponent } from './pages/registro/registro';
-import { Landing} from './public/landing/landing';
+import { Landing} from './pages/landing/landing';
 import { Login} from './pages/login/login';
 
 

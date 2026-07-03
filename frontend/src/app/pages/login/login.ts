@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../api/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +18,37 @@ export class Login {
     password: ''
   };
 
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) { }
+
   mensajeError = '';
 
   onSubmit() {
-    console.log('Login con:', this.usuario);
-    // Acá después llamás al servicio que hace el POST al backend
+
+    this.mensajeError = '';
+
+    this.authService.login(
+      this.usuario.email,
+      this.usuario.password
+    ).subscribe({
+
+      next: (respuesta) => {
+
+        console.log("Respuesta completa:");
+        console.log(respuesta);
+        this.router.navigate(['/productos']);
+      },
+
+      error: (error) => {
+
+        this.mensajeError =
+          error.error.error || "Correo o contraseña incorrectos.";
+
+      }
+
+    });
+
   }
 }

@@ -36,23 +36,6 @@
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0,0,0,0.02);
 }
-
-.item-fila {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 0;
-  border-bottom: 1px solid #F3F4F6;
-}
-
-.item-info h3 { margin: 0 0 0.2rem 0; font-size: 1.1rem; }
-.item-info p { margin: 0; color: #6B7280; font-size: 0.9rem; }
-
-.item-precio-cant {
-  text-align: right;
-  font-weight: 600;
-}
-
 .resumen-total {
   margin-top: 2rem;
   display: flex;
@@ -86,4 +69,13 @@
   text-align: center;
   padding: 4rem;
   color: #6B7280;
+}
+.cantidad-control {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background-color: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 0.3rem 0.7rem;
 }
