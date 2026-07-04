@@ -44,8 +44,6 @@ export class UsuarioController {
 
     };
 
-    // aca esta mi parte de login cande
-
     login = async (req: Request, res: Response) => {
         const { email, password } = req.body;
 

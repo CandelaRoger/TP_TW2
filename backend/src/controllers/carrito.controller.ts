@@ -1,17 +1,17 @@
-import { Request, Response } from "express";
+import { Response } from "express"; 
 import { CarritoRepository } from "../repository/carrito.repository.js";
 import { CarritoService } from "../services/carrito.service.js";
-
+import { RequestConUsuario } from "../middlewares/auth.middleware.js";
 const carritoRepository = new CarritoRepository();
 const carritoService = new CarritoService(carritoRepository);
 
 export class CarritoController {
 
     constructor() { }
-//dejo endpoints asi conecto al front 
-    // POST /api/carrito   agrega un producto al carrito
-    public agregarProducto = async (req: Request, res: Response) => {
 
+    public agregarProducto = async (req: RequestConUsuario, res: Response) => { 
+
+        const usuarioId = req.usuarioId!; 
         const productoId = Number(req.body.productoId);
         const cantidad = req.body.cantidad ? Number(req.body.cantidad) : 1;
 
@@ -20,7 +20,7 @@ export class CarritoController {
         }
 
         try {
-            const resultado = await carritoService.agregarProducto(productoId, cantidad);
+            const resultado = await carritoService.agregarProducto(usuarioId, productoId, cantidad); 
             res.status(201).json(resultado);
 
         } catch (error: any) {
@@ -35,9 +35,9 @@ export class CarritoController {
         }
     }
 
-    // PUT /api/carrito/:itemId   actualiza la cantidad de un item del carrito
-    public actualizarCantidad = async (req: Request, res: Response) => {
+    public actualizarCantidad = async (req: RequestConUsuario, res: Response) => { 
 
+        const usuarioId = req.usuarioId!; // <-- NUEVO
         const itemId = Number(req.params.itemId);
         const cantidad = Number(req.body.cantidad);
 
@@ -46,7 +46,7 @@ export class CarritoController {
         }
 
         try {
-            const resultado = await carritoService.actualizarCantidad(itemId, cantidad);
+            const resultado = await carritoService.actualizarCantidad(usuarioId, itemId, cantidad); 
             res.status(200).json(resultado);
 
         } catch (error: any) {
@@ -65,9 +65,10 @@ export class CarritoController {
         }
     }
 
-    // DELETE /api/carrito/:itemId   elimina un item del carrito
-    public eliminarProducto = async (req: Request, res: Response) => {
+    
+    public eliminarProducto = async (req: RequestConUsuario, res: Response) => { 
 
+        const usuarioId = req.usuarioId!; 
         const itemId = Number(req.params.itemId);
 
         if (isNaN(itemId)) {
@@ -75,7 +76,7 @@ export class CarritoController {
         }
 
         try {
-            const resultado = await carritoService.eliminarProducto(itemId);
+            const resultado = await carritoService.eliminarProducto(usuarioId, itemId); 
             res.status(200).json(resultado);
 
         } catch (error: any) {
@@ -90,10 +91,9 @@ export class CarritoController {
         }
     }
 
-    // GET /api/carrito   ver el carrito actual 
-    public verCarrito = async (req: Request, res: Response) => {
+    public verCarrito = async (req: RequestConUsuario, res: Response) => {
         try {
-            const carrito = await carritoService.obtenerCarrito();
+            const carrito = await carritoService.obtenerCarrito(req.usuarioId!); 
             res.status(200).json(carrito);
 
         } catch (error: any) {
@@ -102,10 +102,10 @@ export class CarritoController {
         }
     }
 
-    // POST /api/carrito/confirmar   no es una compra real, solo vacía el carrito
-    public confirmarPedido = async (req: Request, res: Response) => {
+
+    public confirmarPedido = async (req: RequestConUsuario, res: Response) => { 
         try {
-            const resultado = await carritoService.confirmarPedido();
+            const resultado = await carritoService.confirmarPedido(req.usuarioId!); 
             res.status(200).json(resultado);
 
         } catch (error: any) {

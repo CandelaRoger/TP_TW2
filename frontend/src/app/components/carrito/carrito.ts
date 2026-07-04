@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Producto } from '../../api/services/producto/producto.service';
+import { AuthService } from '../../api/services/auth.service'; // <-- NUEVO
 import { CarritoItemBackend } from '../../interfaces/producto.interface';
 import { PokemonComponent } from '../pokemon/pokemon';
 import Swal from 'sweetalert2';
@@ -22,11 +23,23 @@ export class CarritoComponent implements OnInit {
 
   constructor(
     private productoService: Producto,
+    private authService: AuthService, 
     private router: Router,
     private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    if (!this.authService.estaLogueado()) { 
+      Swal.fire({
+        icon: 'info', 
+        title: 'Iniciá sesión', 
+        text: 'Necesitás iniciar sesión para ver tu carrito.' 
+      }).then(() => { 
+        this.router.navigate(['/login']); 
+      }); 
+      return; 
+    } 
+
     this.productoService.obtenerCarrito().subscribe({
       next: (carrito) => {
         this.itemsCarrito = carrito?.Items ?? [];

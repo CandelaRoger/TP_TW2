@@ -8,12 +8,11 @@ app.use(cors());
 app.use(express.json());
 
 
-//chequeamos q la pticioes del front llegeuen al back 
 app.use((req, res, next) => {
   console.log(`[Backend] ${req.method} ${req.url} - petición recibida`);
   next();
 });
-// Vinculamos las rutas del backend
+
 app.use(AppRoutes.routes); 
 
 const PORT = 3000;

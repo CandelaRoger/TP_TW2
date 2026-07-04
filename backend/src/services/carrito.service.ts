@@ -4,17 +4,17 @@ export class CarritoService {
 
     constructor(private carritoRepository: CarritoRepository) { }
 
-    private async obtenerOCrearCarrito() {
-        const carritoExistente = await this.carritoRepository.obtenerCarritoAbierto();
+    private async obtenerOCrearCarrito(usuarioId: number) { 
+        const carritoExistente = await this.carritoRepository.obtenerCarritoAbierto(usuarioId); 
 
         if (carritoExistente) {
             return carritoExistente;
         }
 
-        return await this.carritoRepository.crearCarrito();
+        return await this.carritoRepository.crearCarrito(usuarioId); 
     }
 
-    async agregarProducto(productoId: number, cantidad: number) {
+    async agregarProducto(usuarioId: number, productoId: number, cantidad: number) { 
 
         const producto = await this.carritoRepository.obtenerProducto(productoId);
 
@@ -22,7 +22,7 @@ export class CarritoService {
             throw new Error("ProductoNoExiste");
         }
 
-        const carrito = await this.obtenerOCrearCarrito();
+        const carrito = await this.obtenerOCrearCarrito(usuarioId); 
 
         const itemExistente = await this.carritoRepository.obtenerItem(carrito.id, productoId);
 
@@ -35,11 +35,11 @@ export class CarritoService {
         return { mensaje: `${producto.nombre} se agregó correctamente al carrito` };
     }
 
-    async actualizarCantidad(itemId: number, cantidad: number) {
+    async actualizarCantidad(usuarioId: number, itemId: number, cantidad: number) {
 
         const item = await this.carritoRepository.obtenerItemPorId(itemId);
 
-        if (!item) {
+        if (!item || item.carrito.usuarioId !== usuarioId) { 
             throw new Error("ItemNoExiste");
         }
 
@@ -52,11 +52,11 @@ export class CarritoService {
         return { mensaje: "Cantidad actualizada correctamente" };
     }
 
-    async eliminarProducto(itemId: number) {
+    async eliminarProducto(usuarioId: number, itemId: number) { 
 
         const item = await this.carritoRepository.obtenerItemPorId(itemId);
 
-        if (!item) {
+        if (!item || item.carrito.usuarioId !== usuarioId) { 
             throw new Error("ItemNoExiste");
         }
 
@@ -65,8 +65,8 @@ export class CarritoService {
         return { mensaje: "Producto eliminado del carrito" };
     }
 
-    async obtenerCarrito() {
-        const carrito = await this.carritoRepository.obtenerCarritoAbierto();
+    async obtenerCarrito(usuarioId: number) { 
+        const carrito = await this.carritoRepository.obtenerCarritoAbierto(usuarioId); 
 
         if (!carrito) {
             return { Items: [], Total: 0 };
@@ -87,8 +87,8 @@ export class CarritoService {
         return { Items: items, Total: total };
     }
 
-    async confirmarPedido() {
-        const carrito = await this.carritoRepository.obtenerCarritoAbierto();
+    async confirmarPedido(usuarioId: number) {
+        const carrito = await this.carritoRepository.obtenerCarritoAbierto(usuarioId); 
 
         if (!carrito || carrito.items.length === 0) {
             throw new Error("CarritoVacio");

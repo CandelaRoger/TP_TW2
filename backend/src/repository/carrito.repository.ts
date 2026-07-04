@@ -1,25 +1,22 @@
 import { PrismaClient } from "../prisma/index.js";
 
 const prisma = new PrismaClient();
-
-// usuario fijo mientras no esté conectado el login con el carrito
-const USUARIO_ID_DEFAULT = 1;
-
 export class CarritoRepository {
 
-    async obtenerCarritoAbierto() {
+    
+
+    async obtenerCarritoAbierto(usuarioId: number) { 
         return await prisma.carrito.findFirst({
-            where: { usuarioId: USUARIO_ID_DEFAULT, cerrado: false },
+            where: { usuarioId, cerrado: false }, 
             include: { items: { include: { producto: true } } }
         });
     }
-
-    async crearCarrito() {
+ 
+    async crearCarrito(usuarioId: number) { 
         return await prisma.carrito.create({
-            data: { usuarioId: USUARIO_ID_DEFAULT }
+            data: { usuarioId } 
         });
     }
-
     async obtenerProducto(productoId: number) {
         return await prisma.producto.findUnique({
             where: { id: productoId }
@@ -47,7 +44,8 @@ export class CarritoRepository {
 
     async obtenerItemPorId(itemId: number) {
         return await prisma.carritoItem.findUnique({
-            where: { id: itemId }
+            where: { id: itemId },
+             include: { carrito: true }
         });
     }
 
