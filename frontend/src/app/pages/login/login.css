@@ -140,3 +140,15 @@ main {
 .texto-registrarse a:hover {
   text-decoration: underline;
 }
+
+.alerta-error {
+  background-color: #ffebe8;
+  border: 1px solid #ffcdd2;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+}

@@ -2,6 +2,10 @@
     <div class="card-registro">
         <h2>Iniciar Sesión</h2>
 
+        @if (mensajeError) {
+        <div class="alerta-error">{{ mensajeError }}</div>
+        }
+
         <form (ngSubmit)="onSubmit()" #formLogin="ngForm">
             <div class="grupo-input">
                 <label>Correo Electrónico</label>
@@ -11,7 +15,7 @@
                 <label>Contraseña</label>
                 <input type="password" name="password" [(ngModel)]="usuario.password" required placeholder="••••••••">
             </div>
-            <button type="submit" class="btn-enviar" [disabled]="!formLogin.valid">
+            <button type="submit" class="btn-enviar">
                 Ingresar
             </button>
         </form>

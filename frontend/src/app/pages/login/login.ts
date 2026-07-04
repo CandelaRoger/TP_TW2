@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../../api/services/auth.service';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -21,30 +22,47 @@ export class Login {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) { }
 
   mensajeError = '';
 
-  onSubmit() {
+  onSubmit(): void {
 
     this.mensajeError = '';
+
+    if (!this.usuario.email) {
+      this.mensajeError = 'Debe ingresar un correo electrónico.';
+      return;
+    }
+
+    if (!this.usuario.password) {
+      this.mensajeError = 'Debe ingresar una contraseña.';
+      return;
+    }
 
     this.authService.login(
       this.usuario.email,
       this.usuario.password
     ).subscribe({
 
-      next: (respuesta) => {
+      next: () => {
 
-       
         this.router.navigate(['/productos']);
+
       },
 
-      error: (error) => {
+      error: (err) => {
 
-        this.mensajeError =
-          error.error.error || "Correo o contraseña incorrectos.";
+        if (err.status === 401) {
+          this.mensajeError = 'Los datos ingresados son incorrectos.';
+        } else {
+          this.mensajeError =
+            err.error?.error || 'Ocurrió un error al iniciar sesión.';
+        }
+
+        this.cdr.detectChanges();
 
       }
 
