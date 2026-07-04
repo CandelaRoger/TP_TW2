@@ -65,11 +65,11 @@ app.post('/api/registro', async (req, res) => {
 async function startServer() {
   try {
     await sql.connect(config);
-   
+    console.log('¡Conectado exitosamente a SQL Server!');
 
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
-    
+      console.log(`Servidor ejecutándose en puerto ${PORT}`);
     });
   } catch (err) {
     process.exit(1); 
