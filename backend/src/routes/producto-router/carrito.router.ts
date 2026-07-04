@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { CarritoController } from "../../controllers/carrito.controller.js";
-import { requireUsuario } from "../../middlewares/auth.middleware.js"; // <-- NUEVO
+import { requireUsuario } from "../../middlewares/auth.middleware.js";
 
 const router = Router();
 

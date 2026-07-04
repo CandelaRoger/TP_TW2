@@ -1,8 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // <-- NUEVO
+import { Router } from '@angular/router';
 import { Producto } from '../../api/services/producto/producto.service';
-import { AuthService } from '../../api/services/auth.service'; // <-- NUEVO
+import { AuthService } from '../../api/services/auth.service';
 import { ProductoBackend } from '../../interfaces/producto.interface';
 import { PokemonComponent } from '../pokemon/pokemon';
 import Swal from 'sweetalert2';

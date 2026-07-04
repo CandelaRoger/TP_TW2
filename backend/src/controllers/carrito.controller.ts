@@ -37,7 +37,7 @@ export class CarritoController {
 
     public actualizarCantidad = async (req: RequestConUsuario, res: Response) => { 
 
-        const usuarioId = req.usuarioId!; // <-- NUEVO
+        const usuarioId = req.usuarioId!;
         const itemId = Number(req.params.itemId);
         const cantidad = Number(req.body.cantidad);
 
