@@ -37,8 +37,7 @@ export class Login {
 
       next: (respuesta) => {
 
-        console.log("Respuesta completa:");
-        console.log(respuesta);
+       
         this.router.navigate(['/productos']);
       },
 

@@ -19,14 +19,13 @@ export class ProductoService {
     ) {}
 
     async obtenerProductos() {
-        console.log("[Service] obtenerProductos() - consultando repositorio...");
+    
         const productos = await this.productoRepository.obtenerTodos();
-        console.log(`[Service] obtenerProductos() - se obtuvieron ${productos.length} productos de SQL Server`);
         return productos.map(mapearProducto);
     }
 
     async obtenerProducto(id: number) {
-        console.log("[Service] obtenerProducto() - id:", id);
+    
         const producto = await this.productoRepository.obtenerPorId(id);
         return producto ? mapearProducto(producto) : null;
     }
@@ -48,8 +47,6 @@ export class ProductoService {
             throw new Error("Precio inválido");
         }
         
-        console.log("[Service] crearProducto() - datos a insertar:", { nombre, descripcion, clasificacion, precio, imagenUrl });
-
         const nuevoProducto = await this.productoRepository.crear({
             nombre,
             descripcion,
@@ -57,9 +54,6 @@ export class ProductoService {
             precio,
             imagenUrl: imagenUrl || '/assets/productos/default.jpg' 
         });
-        
-        console.log("[Service] crearProducto() - producto creado con id:", nuevoProducto.id);
-
         return mapearProducto(nuevoProducto);
     }
 }
