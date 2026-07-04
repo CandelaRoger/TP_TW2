@@ -1,22 +1,16 @@
 import express from "express";
 import cors from "cors";
-import { AppRoutes } from "./routes/routes.js"; 
+import { AppRoutes } from "./routes/routes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+app.use(AppRoutes.routes);
 
-app.use((req, res, next) => {
-  
-  next();
-});
-
-app.use(AppRoutes.routes); 
-
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  
+    console.log(`Servidor iniciado en http://localhost:${PORT}`);
 });
