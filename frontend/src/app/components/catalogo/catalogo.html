@@ -1,37 +1,71 @@
 <div class="tienda-container">
-  
-  <header class="header-electronico">
-    <div class="logo-container">
-    
-    </div>
-   <div class="header-actions" style="display: flex; gap: 10px;"> 
 
-   </div>
+  <header class="header-electronico">
+
+    <div class="logo-container">
+    </div>
+
+    <div class="header-actions" style="display: flex; gap: 10px;">
+    </div>
+
   </header>
 
-
   <main class="contenido">
-    <h2 class="titulo-seccion">Catálogo</h2>
+
+    <div class="barra-superior">
+
+      <h2 class="titulo-seccion">
+        Catálogo
+      </h2>
+
+      <div class="buscador">
+        <input
+          type="text"
+          placeholder=" Buscar peluche..."
+          [(ngModel)]="textoBusqueda"
+          (input)="filtrarProductos()"
+        />
+      </div>
+
+    </div>
 
     @if (cargando) {
+
       <div class="spinner-container">
-        <img src="pokeballl.png" class="spinner-pokeball" alt="Cargando..." />
-        <p class="spinner-texto">Cargando productos...</p>
+        <img
+          src="pokeballl.png"
+          class="spinner-pokeball"
+          alt="Cargando..."
+        />
+        <p class="spinner-texto">
+          Cargando productos...
+        </p>
       </div>
+
     } @else {
+
       <div class="productos-grid">
-        @for (producto of listaProductos; track producto.Id) {
-          <app-pokemon 
+
+        @for (producto of productosFiltrados; track producto.Id) {
+
+          <app-pokemon
             [datos]="producto"
             [cantidad]="obtenerCantidad(producto)"
             (onIncrementar)="incrementarCantidad($event)"
             (onDecrementar)="decrementarCantidad($event)"
             (onAgregar)="agregarProducto($event)">
           </app-pokemon>
+
         } @empty {
-          <p class="vacio-mensaje">Buscando productos en el almacén...</p>
+
+          <p class="vacio-mensaje">
+            No se encontraron peluches.
+          </p>
+
         }
+
       </div>
+
     }
 
   </main>

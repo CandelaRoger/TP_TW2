@@ -5,16 +5,20 @@ import { Producto } from '../../api/services/producto/producto.service';
 import { AuthService } from '../../api/services/auth.service'; // <-- NUEVO
 import { ProductoBackend } from '../../interfaces/producto.interface';
 import { PokemonComponent } from '../pokemon/pokemon';
-import Swal from 'sweetalert2'; 
+import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-catalogo',
-  imports: [CommonModule, PokemonComponent],
+  imports: [CommonModule, FormsModule, PokemonComponent],
   templateUrl: './catalogo.html',
   styleUrl: './catalogo.css',
 })
 export class CatalogoComponent implements OnInit {
   listaProductos: ProductoBackend[] = [];
+  productosFiltrados: ProductoBackend[] = [];
+
+  textoBusqueda: string = '';
   cargando: boolean = true;
   cantidades: { [id: number]: number } = {};
 
@@ -23,15 +27,16 @@ export class CatalogoComponent implements OnInit {
 
   constructor(
     private productoService: Producto,
-    private authService: AuthService, 
-    private router: Router, 
+    private authService: AuthService,
+    private router: Router,
     private cd: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.productoService.obtenerProductos().subscribe({
       next: (data) => {
         this.listaProductos = data;
+        this.productosFiltrados = [...data];
         data.forEach((producto) => (this.cantidades[producto.Id] = this.CANTIDAD_MINIMA));
         this.cargando = false;
         this.cd.detectChanges();
@@ -62,21 +67,21 @@ export class CatalogoComponent implements OnInit {
   }
 
   agregarProducto(producto: ProductoBackend) {
-    if (!this.authService.estaLogueado()) { 
-      Swal.fire({ 
-        icon: 'info', 
-        title: 'Iniciá sesión', 
-        text: 'Necesitás iniciar sesión para agregar productos al carrito.' 
-      }).then(() => { 
-        this.router.navigate(['/login']); 
-      }); 
-      return; 
-    } 
+    if (!this.authService.estaLogueado()) {
+      Swal.fire({
+        icon: 'info',
+        title: 'Iniciá sesión',
+        text: 'Necesitás iniciar sesión para agregar productos al carrito.'
+      }).then(() => {
+        this.router.navigate(['/login']);
+      });
+      return;
+    }
 
     const cantidad = this.obtenerCantidad(producto);
     this.productoService.agregarAlCarrito(producto.Id, cantidad).subscribe({
       next: () => {
-         const sonido = new Audio('assets/sounds/agregarAlCarrito.mp3');
+        const sonido = new Audio('assets/sounds/agregarAlCarrito.mp3');
         sonido.play();
         Swal.fire({
           title: '¡Agregado!',
@@ -95,5 +100,19 @@ export class CatalogoComponent implements OnInit {
         });
       }
     });
+
+  } filtrarProductos(): void {
+    const texto = this.textoBusqueda.trim().toLowerCase();
+
+    if (!texto) {
+      this.productosFiltrados = [...this.listaProductos];
+      return;
+    }
+
+    this.productosFiltrados = this.listaProductos.filter(producto =>
+      producto.Nombre.toLowerCase().includes(texto) ||
+      producto.Descripcion.toLowerCase().includes(texto) ||
+      producto.Clasificacion.toLowerCase().includes(texto)
+    );
   }
 }
